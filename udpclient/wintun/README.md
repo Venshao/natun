@@ -2,7 +2,7 @@
 
 ## 概述
 
-本文件夹包含了 Windows 平台下 NAT3P2P 客户端所需的 WinTun 动态链接库文件。WinTun 是一个高性能的 Windows TUN/TAP 驱动程序，用于创建虚拟网络接口。
+Linux/MacOS 请忽略本文件夹。本文件夹包含了 Windows 平台下 Neno 客户端所需的 WinTun 动态链接库文件。WinTun 是一个高性能的 Windows TUN/TAP 驱动程序，用于创建虚拟网络接口。
 
 ## 文件结构
 
@@ -28,9 +28,9 @@ WinTun 是由 WireGuard 项目开发的高性能 Windows TUN/TAP 驱动程序，
 - **轻量级**: 体积小巧，资源占用少
 - **兼容性**: 支持 Windows 7 及以上版本
 
-## 在 NAT3P2P 中的作用
+## 在 Neno 中的作用
 
-NAT3P2P 使用 WinTun 来创建虚拟网络接口，实现以下功能：
+Neno 使用 WinTun 来创建虚拟网络接口，实现以下功能：
 
 1. **虚拟局域网**: 创建 10.10.10.x 网段的虚拟网络
 2. **数据包转发**: 在虚拟网络和物理网络之间转发数据包
@@ -106,8 +106,6 @@ WinTun 驱动程序负责：
 ## 相关链接
 
 - [WireGuard 项目](https://www.wireguard.com/)
-- [WinTun 源码](https://git.zx2c4.com/wintun/)
-- [NAT3P2P 项目](https://github.com/your-repo/nat3p2p)
 
 ## 支持
 
