@@ -653,6 +653,11 @@ cd natun
 # 2. 安装依赖
 go mod download
 
+# 如果网络超时，请设置代理再重新安装依赖
+go env -w GO111MODULE=on
+go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+go mod download
+
 # 3. 运行测试
 go test ./...
 
