@@ -1,0 +1,18 @@
+{
+  "punch_hole": {
+    "max_concurrency": 2,
+    "port_range": 6,
+    "base_port_offset": 0,
+    "enable_relay": true,
+    "punch_timeout": 10,
+    "relay_fallback": true
+  },
+  "server": {
+    "host": "117.72.206.26",
+    "port": 17709
+  },
+  "log_level": "DEBUG",
+  "tun_ip": "10.10.10.199",
+  "client_id": "45173539",
+  "client_pwd": "123456"
+}

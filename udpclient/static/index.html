@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neno · 直连组网 · 异地组网</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/vue.global.prod.js"></script>
+</head>
+<body>
+<div id="app">
+    <div class="dashboard">
+        <!-- 头部 -->
+        <div class="header">
+            <div class="logo">Ne</div>
+            <div class="header-content">
+                <h1>Neno · 直连组网（尝鲜版）</h1>
+                <div class="product-version">一键组网 · 远程办公 · 游戏串流</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- 左侧：我的设备 -->
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                        <line x1="8" y1="21" x2="16" y2="21"></line>
+                        <line x1="12" y1="17" x2="12" y2="21"></line>
+                    </svg>
+                    我的设备
+                </div>
+                <div class="card-body">
+                    <div class="credentials">
+                        <div class="credential-item">
+                            <div class="credential-label">
+                                我的连接码
+                                <div class="tooltip">
+                                    <button class="copy-btn" @click="copyClientId">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                        </svg>
+                                        复制连接码
+                                        <span class="tooltiptext">{{ copyStatus.id }}</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="credential-value">{{ localDevice.clientId }}</div>
+                        </div>
+
+                        <div class="credential-item">
+                            <div class="credential-label">
+                                连接密码
+                            </div>
+                            <div class="credential-value-wrapper">
+                                <div class="credential-value">{{ localDevice.password || '******' }}</div>
+                                <div class="credential-actions">
+                                    <div class="tooltip">
+                                        <button class="copy-btn" @click="copyPassword">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                            </svg>
+                                            复制密码
+                                            <span class="tooltiptext">{{ copyStatus.pwd }}</span>
+                                        </button>
+                                    </div>
+                                    <div class="tooltip">
+                                        <button class="copy-btn" @click="showResetPasswordModal">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                                            </svg>
+                                            修改密码
+                                            <span class="tooltiptext">修改密码</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <div class="info-label">本机虚拟IP地址</div>
+                            <div class="info-value">{{ localDevice.IP }}/24</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">网络类型</div>
+                            <div class="info-value">
+                                <a href="https://www.checkmynat.com" target="_blank" class="nat-test-link">
+                                    点击测试
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                                        <polyline points="15,3 21,3 21,9"></polyline>
+                                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧：连接远程设备 -->
+            <div class="card">
+                <div class="card-header">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    连接远程设备
+                </div>
+                <div class="card-body">
+                    <div class="status-card" v-if="connectionStatus.online || connectionStatus.message !== '未连接'">
+                        <div class="status-header">
+                            <div class="status-dot" :style="{
+                                backgroundColor: connectionStatus.online ? 'var(--success)' : 'var(--danger)'
+                            }"></div>
+                            {{ connectionStatus.message }}
+                        </div>
+
+                        <div v-if="connectionStatus.online" class="status-body">
+                            <div class="status-item">
+                                <span class="status-label">连接模式</span>
+                                <span class="status-value" :style="{
+                                    color: connectionInfo.modeCode === 0 ? 'var(--success)' :
+                                           connectionInfo.modeCode === 1 ? 'var(--warning)' : 'var(--danger)'
+                                }">
+                                    <span class="mode-indicator" :class="{
+                                        'mode-direct': connectionInfo.modeCode === 0,
+                                        'mode-relay': connectionInfo.modeCode === 1,
+                                        'mode-disconnected': connectionInfo.modeCode === 2
+                                    }"></span>
+                                    {{ connectionInfo.statusText }}
+                                </span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">远程设备ID</span>
+                                <span class="status-value">{{ peerDevice.clientId }}</span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">远程虚拟IP</span>
+                                <span class="status-value">
+                                    {{ peerDevice.IP }}/24
+                                    <div class="tooltip">
+                                        <button class="copy-btn" @click="copyPeerIP">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2" />
+                                            </svg>
+                                            复制IP
+                                            <span class="tooltiptext">{{ copyStatus.peerIP }}</span>
+                                        </button>
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="status-item">
+                                <span class="status-label">往返延迟</span>
+                                <span class="status-value" :style="{ color: peerDevice.latency <= 100 ? 'var(--success)' : 'var(--warning)' }">
+                                    {{ peerDevice.latency >= 0 ? peerDevice.latency + 'ms' : '-' }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="connection-form">
+                        <div class="input-group">
+                            <label class="input-label">
+                                对方的连接码
+                                <span class="input-required">*</span>
+                            </label>
+                            <input v-model="targetId"
+                                   type="text"
+                                   class="connection-input"
+                                   placeholder="输入8位连接码"
+                                   maxlength="8">
+                        </div>
+
+                        <!-- 最近连接的设备列表 -->
+                        <div class="recent-devices" v-if="recentDevices.length > 0">
+                            <div class="recent-devices-header">
+                                最近连接
+                            </div>
+                            <div class="recent-device-list">
+                                <div v-for="device in recentDevices"
+                                     :key="device.id"
+                                     class="recent-device-item">
+                                    <div class="recent-device-info" @click="targetId = device.id">
+                                        <div class="recent-device-id">{{ device.id }}</div>
+                                        <div class="recent-device-time">{{ formatTime(device.lastConnected) }}</div>
+                                    </div>
+                                    <div class="recent-device-actions">
+                                        <button class="connect-btn-small" @click="quickConnect(device)">
+                                            快速连接
+                                        </button>
+                                        <button class="delete-btn" @click="deleteDevice(device.id)">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M3 6h18"></path>
+                                                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button class="connect-btn"
+                                :class="{ 'disabled': connectionStatus.online || isConnecting }"
+                                :disabled="connectionStatus.online || isConnecting"
+                                @click="showConnectPasswordModal">
+                            {{ connectionStatus.online ? '设备已连接' : (isConnecting ? '正在建立连接...' : '开始连接') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 连接密码对话框 -->
+    <div class="modal-overlay" v-if="showConnectModal" @click.self="closeConnectPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">输入连接密码</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label">
+                        远程节点连接密码
+                        <span class="input-required">*</span>
+                    </label>
+                    <input v-model="connectPassword"
+                           type="password"
+                           class="connection-input"
+                           placeholder="输入6位连接密码"
+                           maxlength="6"
+                           pattern="[0-9]*"
+                           inputmode="numeric"
+                           @keyup.enter="connectPeer">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @click="closeConnectPasswordModal">取消</button>
+                <button class="btn btn-primary"
+                        @click="connectPeer"
+                        :disabled="isConnecting || !connectPassword || connectPassword.length !== 6">
+                    {{ isConnecting ? '连接中...' : '确认连接' }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 修改密码对话框 -->
+    <div class="modal-overlay" v-if="showPasswordModal" @click.self="closeResetPasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">修改连接密码</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label class="input-label">
+                        新密码
+                        <span class="input-required">*</span>
+                    </label>
+                    <input v-model="newPassword"
+                           type="text"
+                           class="connection-input"
+                           :class="{ error: passwordError }"
+                           placeholder="输入6位数字密码"
+                           maxlength="6"
+                           pattern="[0-9]*"
+                           inputmode="numeric">
+                    <div class="form-error" v-if="passwordError">{{ passwordErrorMessage }}</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @click="closeResetPasswordModal">取消</button>
+                <button class="btn btn-primary"
+                        @click="resetPassword"
+                        :disabled="isResetting || !newPassword || newPassword.length !== 6">
+                    {{ isResetting ? '修改中...' : '确认修改' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./js/app.js"></script>
+</body>
+</html>
