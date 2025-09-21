@@ -47,11 +47,11 @@ Neno 是一个基于 Go 语言开发的高性能 NAT 穿透组网工具，通过
 ### 📥 下载方式
 
 #### 方式一：Gitee Releases（推荐）
-```bash
-# 下载最新版本
-wget https://gitee.com/qwxrepo/natun/releases/latest/download/natun-latest.zip
-unzip natun-latest.zip
-```
+windows系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-windows-x64.zip
+
+Linux系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-linux-x64
+
+Mac系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-mac-x64
 
 #### 方式二：从源码编译
 ```bash
@@ -87,13 +87,13 @@ cd ../udpcloud
 #### 1️⃣ 启动程序
 ```bash
 # Windows (需要管理员权限)
-bin\windows\cli.exe
+双击打开 cli-windows-x64.exe
 
 # Linux (需要root权限)
-sudo ./bin/linux/cli
+sudo ./cli-linux-x64
 
 # macOS (需要root权限)
-sudo ./bin/darwin/cli
+sudo ./cli-mac-x64
 ```
 
 #### 2️⃣ 访问界面
@@ -658,17 +658,9 @@ go env -w GO111MODULE=on
 go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
 go mod download
 
-# 3. 运行测试
-go test ./...
-
-# 4. 构建项目
-# 使用构建脚本（推荐）
+# 3. 构建项目
 cd udpclient && (./build.sh || build.bat)
 cd ../udpcloud && (./build.sh || build.bat)
-
-# 或手动构建
-go build ./udpclient
-go build ./udpcloud
 ```
 
 ### 📝 提交规范
