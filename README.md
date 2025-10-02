@@ -49,6 +49,8 @@ Neno 是一个基于 Go 语言开发的高性能 NAT 穿透组网工具，通过
 #### 方式一：Gitee Releases（推荐）
 windows系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-windows-x64.zip
 
+Android系统：https://gitee.com/qwxrepo/natun-android/releases/download/v0.0.1-alpha/neno-android.apk
+
 Linux系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-linux-x64
 
 Mac系统：https://gitee.com/qwxrepo/natun/releases/download/v0.0.1-alpha/cli-mac-x64
@@ -72,11 +74,12 @@ cd ../udpcloud
 
 ### 📋 系统要求
 
-| 平台 | 要求 |
-|------|------|
-| **Windows** | Windows 10/11 (需要管理员权限) |
-| **Linux** | Ubuntu 18.04+ / CentOS 7+ / Debian 9+ |
-| **macOS** | macOS 10.14+ |
+| 平台          | 要求                                    |
+|-------------|---------------------------------------|
+| **Windows** | Windows 10/11 (需要管理员权限)               |
+| **Android** | Android 7.0+                          |
+| **Linux**   | Ubuntu 18.04+ / CentOS 7+ / Debian 9+ |
+| **macOS**   | macOS 10.14+                          |
 
 ---
 
@@ -89,6 +92,9 @@ cd ../udpcloud
 # Windows (需要管理员权限)
 双击打开 cli-windows-x64.exe
 
+# Android
+安装 neno-android.apk 并启动
+
 # Linux (需要root权限)
 sudo ./cli-linux-x64
 
@@ -97,8 +103,8 @@ sudo ./cli-mac-x64
 ```
 
 #### 2️⃣ 访问界面
-- 程序启动后会自动打开浏览器
-- 访问地址：`http://127.0.0.1:8898`
+- PC端程序启动后会自动打开浏览器
+- PC端访问地址：`http://127.0.0.1:8898`
 - 在"我的设备"中查看您的连接码和密码
 
 #### 3️⃣ 建立连接
