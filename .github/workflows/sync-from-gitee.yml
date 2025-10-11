@@ -5,6 +5,10 @@ on:
     - cron: '0 * * * *'  # 每小时同步一次
   workflow_dispatch:      # 支持手动触发
 
+# 允许 workflow push 到仓库
+permissions:
+  contents: write
+
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -15,6 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          persist-credentials: true  # 保证 push 使用 GITHUB_TOKEN
 
       # 2️⃣ 配置 Git 用户信息（用于 merge commit）
       - name: Configure git
@@ -34,16 +39,13 @@ jobs:
 
       # 5️⃣ 检查是否有更新并 merge + push
       - name: Merge and Push if updates exist
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           LOCAL=$(git rev-parse HEAD)
           REMOTE=$(git rev-parse gitee/master)
           if [ "$LOCAL" != "$REMOTE" ]; then
               echo "New commits detected from Gitee. Merging..."
               git merge gitee/master --allow-unrelated-histories -X theirs -m "sync from gitee"
-              # 使用 PAT push，确保权限
-              git push https://Venshao:$GH_PAT@github.com/Venshao/natun.git master
+              git push origin master
           else
               echo "No updates from Gitee. Skip merge and push."
           fi
