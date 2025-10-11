@@ -8,33 +8,40 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+
     steps:
+      # 1. Checkout GitHub 仓库
       - name: Checkout GitHub repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # 2. 配置 Git 用户信息（用于 merge commit）
       - name: Configure git
         run: |
           git config --global user.name "sync-bot"
           git config --global user.email "sync-bot@example.com"
 
-      - name: Remove and Add Gitee remote
+      # 3. 移除已有的 gitee remote 并添加新的
+      - name: Add Gitee remote
         run: |
           git remote remove gitee || true
           git remote add gitee https://gitee.com/qwxrepo/natun.git
 
+      # 4. 拉取 Gitee 仓库
       - name: Fetch from Gitee
         run: git fetch gitee
 
+      # 5. 检查是否有更新
       - name: Merge and Push if updates exist
         run: |
           LOCAL=$(git rev-parse HEAD)
           REMOTE=$(git rev-parse gitee/master)
           if [ "$LOCAL" != "$REMOTE" ]; then
+              echo "New commits detected from Gitee. Merging..."
               git merge gitee/master --allow-unrelated-histories -m "sync from gitee"
-              git push origin master
+              git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/Venshao/natun.git master
           else
               echo "No updates from Gitee. Skip merge and push."
           fi
