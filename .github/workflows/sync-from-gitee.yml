@@ -2,23 +2,23 @@ name: Sync from Gitee
 
 on:
   schedule:
-    - cron: '0 * * * *'  # 每小时同步一次
-  workflow_dispatch:      # 支持手动触发
+    - cron: '0 * * * *'
+  workflow_dispatch:
 
 jobs:
   sync:
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout GitHub 仓库
+      # Checkout GitHub 仓库（使用 PAT）
       - name: Checkout GitHub repo
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-          persist-credentials: true  # 保证 push 使用 token
+          token: ${{ secrets.PAT }}
+          persist-credentials: true
 
-      # 配置 Git 用户信息（用于 merge commit）
+      # 配置 Git 用户信息
       - name: Configure git
         run: |
           git config --global user.name "sync-bot"
