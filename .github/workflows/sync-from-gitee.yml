@@ -43,7 +43,7 @@ jobs:
               echo "New commits detected from Gitee. Merging..."
               git merge gitee/master --allow-unrelated-histories -X theirs -m "sync from gitee"
               # 使用 PAT push，确保权限
-              git push https://$GH_PAT@github.com/Venshao/natun.git master
+              git push https://Venshao:$GH_PAT@github.com/Venshao/natun.git master
           else
               echo "No updates from Gitee. Skip merge and push."
           fi
