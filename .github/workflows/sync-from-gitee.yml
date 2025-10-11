@@ -36,13 +36,15 @@ jobs:
 
       # 检查是否有更新并 merge + push
       - name: Merge and Push if updates exist
+        env:
+          GH_PAT: ${{ secrets.PAT }}
         run: |
           LOCAL=$(git rev-parse HEAD)
           REMOTE=$(git rev-parse gitee/master)
           if [ "$LOCAL" != "$REMOTE" ]; then
               echo "New commits detected from Gitee. Merging..."
               git merge gitee/master --allow-unrelated-histories -X theirs -m "sync from gitee"
-              git push origin master
+              git push https://$GH_PAT@github.com/Venshao/natun.git master
           else
               echo "No updates from Gitee. Skip merge and push."
           fi
