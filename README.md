@@ -123,6 +123,52 @@ sudo ./cli-mac-x64
 
 ---
 
+## 可选：在 Docker 中运行（适用于飞牛 NAS）
+
+对于希望通过 Docker 在飞牛 NAS 上运行 Neno 的用户，尤其是希望实现异地组网和远程访问 NAS 的场景，可以按照以下步骤进行部署。使用 Docker 部署可以避免手动使用 `sudo ./cli-linux-x64` 启动的问题，并且支持自动启动和便捷管理。
+
+### 步骤 1：拉取 Docker 镜像
+
+1. 使用 SSH 连接到飞牛 NAS 的服务器。
+2. 执行以下命令来拉取 Neno 的 Docker 镜像：
+
+```bash
+sudo docker pull venshao/neno:0.0.1-alpha
+```
+
+### 步骤 2：启动 Docker 容器
+
+执行以下命令来启动 Neno Docker 容器。此命令会以守护进程模式（后台运行）启动容器，并确保容器在 NAS 重启后自动启动：
+
+```bash
+sudo docker run -d \
+  --name neno \
+  --restart unless-stopped \
+  --network host \
+  --cap-add=NET_ADMIN \
+  --cap-add=NET_RAW \
+  --device=/dev/net/tun \
+  -v /usr/local/neno/config:/app/config \
+  venshao/neno:0.0.1-alpha
+```
+
+* `--network host`：使用主机网络，确保 NAS 和 Docker 容器之间的网络互通。
+* `--cap-add=NET_ADMIN` 和 `--cap-add=NET_RAW`：授予容器网络管理权限，允许它进行必要的网络操作。
+* `--device=/dev/net/tun`：允许容器使用 TUN 设备，这是实现虚拟网络的重要部分。
+* `-v /usr/local/neno/config:/app/config`：挂载配置文件目录到容器中，以便持久化配置。
+
+### 步骤 3：访问管理后台
+
+1. 在同一局域网内的其他电脑或手机，打开浏览器，输入以下地址访问后台管理界面：
+
+   ```
+   http://<NAS服务器的局域网IP地址>:8898
+   ```
+
+2. 在管理界面中，您将能够查看连接码和连接密码，使用这些信息可以将其他设备连接到您的 NAS。
+
+---
+
 ## 💡 功能特性
 
 ### 🔧 NAT穿透技术
